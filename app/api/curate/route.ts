@@ -1,4 +1,6 @@
+import { createHash } from "node:crypto";
 import Anthropic from "@anthropic-ai/sdk";
+import { supabase } from "@/lib/supabase";
 
 const SYSTEM_PROMPT = `You are asfo, a luxury travel curation agent. You do not generate generic
 itineraries — you make defensible, opinionated recommendations a discerning
@@ -106,15 +108,49 @@ export async function POST(request: Request) {
     );
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
+  const providedKey = request.headers.get("x-api-key");
+  if (!providedKey) {
+    return Response.json(
+      { error: "Missing \"x-api-key\" header." },
+      { status: 401 }
+    );
+  }
+
+  const keyHash = createHash("sha256").update(providedKey).digest("hex");
+
+  const { data: apiKeyRow, error: apiKeyLookupError } = await supabase
+    .from("api_keys")
+    .select("id, credits_remaining")
+    .eq("key_hash", keyHash)
+    .maybeSingle();
+
+  if (apiKeyLookupError) {
+    return Response.json(
+      { error: `Failed to validate API key: ${apiKeyLookupError.message}` },
+      { status: 500 }
+    );
+  }
+
+  if (!apiKeyRow) {
+    return Response.json({ error: "Invalid API key." }, { status: 401 });
+  }
+
+  if (apiKeyRow.credits_remaining <= 0) {
+    return Response.json(
+      { error: "No credits remaining for this API key." },
+      { status: 402 }
+    );
+  }
+
+  const anthropicApiKey = process.env.ANTHROPIC_API_KEY;
+  if (!anthropicApiKey) {
     return Response.json(
       { error: "ANTHROPIC_API_KEY is not configured on the server." },
       { status: 500 }
     );
   }
 
-  const anthropic = new Anthropic({ apiKey });
+  const anthropic = new Anthropic({ apiKey: anthropicApiKey });
 
   try {
     const message = await anthropic.messages.create({
@@ -136,7 +172,26 @@ export async function POST(request: Request) {
       );
     }
 
-    return Response.json(toolUseBlock.input);
+    const result = toolUseBlock.input;
+
+    const [decrementResult, usageLogResult] = await Promise.all([
+      supabase.rpc("decrement_credits", { key_id: apiKeyRow.id }),
+      supabase
+        .from("usage_logs")
+        .insert({ api_key_id: apiKeyRow.id, query }),
+    ]);
+
+    if (decrementResult.error) {
+      console.error(
+        "Failed to decrement credits_remaining:",
+        decrementResult.error
+      );
+    }
+    if (usageLogResult.error) {
+      console.error("Failed to insert usage log:", usageLogResult.error);
+    }
+
+    return Response.json(result);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
     return Response.json(
