@@ -283,6 +283,8 @@ export async function POST(request: Request) {
     const upsellPriceUsdc = UPSELL_PRICES_USDC[upsellTier] ?? 0;
     result = { ...result, upsell_price_usdc: upsellPriceUsdc };
 
+    let watsonDecisionRows: Record<string, unknown>[] = [];
+
     if (toolUseBlock.name === WATSON_TOOL.name) {
       const totalAllocated = Number(toolInput.total_allocated) || 0;
       const commissionAmount = totalAllocated * COMMISSION_RATE;
@@ -291,16 +293,31 @@ export async function POST(request: Request) {
         commission_rate: COMMISSION_RATE,
         commission_amount: commissionAmount,
       };
+
+      if (Array.isArray(toolInput.decisions)) {
+        watsonDecisionRows = (
+          toolInput.decisions as Array<Record<string, unknown>>
+        ).map((decision) => ({
+          api_key_id: apiKeyRow.id,
+          category: String(decision.category ?? ""),
+          target: String(decision.target ?? ""),
+          amount_recommended: Number(decision.amount) || 0,
+        }));
+      }
     } else if (toolUseBlock.name === MORIARTY_TOOL.name) {
       result = { ...result, disclaimer: MORIARTY_DISCLAIMER };
     }
 
-    const [decrementResult, usageLogResult] = await Promise.all([
-      supabase.rpc("decrement_credits", { key_id: apiKeyRow.id }),
-      supabase
-        .from("usage_logs")
-        .insert({ api_key_id: apiKeyRow.id, query }),
-    ]);
+    const [decrementResult, usageLogResult, watsonDecisionsResult] =
+      await Promise.all([
+        supabase.rpc("decrement_credits", { key_id: apiKeyRow.id }),
+        supabase
+          .from("usage_logs")
+          .insert({ api_key_id: apiKeyRow.id, query }),
+        watsonDecisionRows.length > 0
+          ? supabase.from("watson_decisions").insert(watsonDecisionRows)
+          : Promise.resolve({ error: null }),
+      ]);
 
     if (decrementResult.error) {
       console.error(
@@ -310,6 +327,12 @@ export async function POST(request: Request) {
     }
     if (usageLogResult.error) {
       console.error("Failed to insert usage log:", usageLogResult.error);
+    }
+    if (watsonDecisionsResult.error) {
+      console.error(
+        "Failed to insert watson_decisions:",
+        watsonDecisionsResult.error
+      );
     }
 
     return Response.json(result);
