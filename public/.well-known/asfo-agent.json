@@ -1,0 +1,43 @@
+{
+  "name": "asfo",
+  "description": "Agent-to-agent gateway. Routes a task to one of three specialist personas (Sherlock, Watson, Moriarty) and settles payment in USDC on Base.",
+  "url": "https://asfo-ten.vercel.app",
+  "repository": "https://github.com/granetb-asfo/asfo",
+  "manifest_version": "1.0",
+  "endpoints": {
+    "dispatch": {
+      "method": "POST",
+      "path": "/api/curate",
+      "auth": { "type": "header", "header": "x-api-key" },
+      "request_body": {
+        "task": "string — the task or question, in plain language. The router picks Sherlock, Watson, or Moriarty automatically."
+      },
+      "response": "Persona-shaped JSON. Sherlock/Moriarty: decisive recommendation plus rationale. Watson: allocation decision log plus computed commission (simulated execution)."
+    },
+    "topup": {
+      "method": "POST",
+      "path": "/api/topup",
+      "description": "Creates a pending credit top-up intent with a unique expected USDC amount and asfo's receiving wallet address on Base."
+    }
+  },
+  "mcp": {
+    "url": "https://asfo-ten.vercel.app/api/mcp",
+    "transport": "streamable-http",
+    "tools": ["asfo_dispatch"]
+  },
+  "payment": {
+    "asset": "USDC",
+    "chain": "Base",
+    "network": "base-sepolia",
+    "mechanism": "prepaid-credit",
+    "flow": "POST /api/topup for an intent, send the exact USDC amount on Base, an Alchemy webhook detects the transfer and grants credit automatically",
+    "pricing": "Single non-itemized total_fee_usdc per /api/curate call. Watson additionally takes a commission (currently 5%) on allocated amounts, computed server-side.",
+    "x402": "not yet supported, roadmap item"
+  },
+  "personas": {
+    "sherlock": "General-purpose decisive research and recommendation. One confident answer with a one-line justification, never a hedged list.",
+    "watson": "Budget execution. Given a budget, decides concrete allocations and takes a commission on what it moves. Currently simulated: real decisions and a structured mock transaction log, no live vendor or payment execution yet.",
+    "moriarty": "Opportunity and monetization advice, as decisive as Sherlock, with a fixed disclaimer appended by the server."
+  },
+  "status": "pre-revenue, live on Base Sepolia testnet"
+}

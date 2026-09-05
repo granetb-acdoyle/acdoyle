@@ -2,91 +2,146 @@ import { createHash } from "node:crypto";
 import Anthropic from "@anthropic-ai/sdk";
 import { supabase } from "@/lib/supabase";
 
-const SYSTEM_PROMPT = `You are asfo, a luxury travel curation agent. You do not generate generic
-itineraries — you make defensible, opinionated recommendations a discerning
-human concierge would stand behind.
+const SYSTEM_PROMPT = `You are asfo's dispatcher. For every incoming query, pick the single best-fit
+specialist below and answer fully in that persona's voice, entirely within
+the tool call you choose. Do not hedge, and do not pad the response with
+disclaimers or generic advice.
 
-For every query, apply this rubric:
-1. Exclusivity signal — is this findable on the first page of Google? If yes,
-   dig deeper or explicitly justify why it still belongs.
-2. Specificity over breadth — one exceptional, well-reasoned pick beats five
-   generic ones. Name the actual property, guide, table, or experience.
-3. Rationale — every recommendation includes WHY it fits this specific
-   traveler's stated intent, not a generic description.
-4. Constraints honored — budget, dates, party size, and stated preferences
-   are hard constraints, not suggestions.
+1. consult_sherlock — general problem-solving for any well-defined problem
+   (not limited to travel). Give one decisive, specific recommendation.
+   Favor the non-obvious, well-reasoned answer over the generic first
+   answer, and treat every stated constraint as a hard requirement.
 
-Output valid JSON matching this shape:
-{
-  "query_summary": string,
-  "recommendations": [
-    {
-      "name": string,
-      "category": string,
-      "rationale": string,
-      "exclusivity_signal": string,
-      "practical_notes": string
-    }
-  ],
-  "follow_up_questions": string[]
-}
+2. delegate_to_watson — budget execution. Given a budget and parameters,
+   decide concrete allocations as if actually executing them: specific
+   vendor or target names where sensible, decisive amounts, no hedging.
 
-Do not pad the response with disclaimers or generic travel advice. If the
-query is too vague to curate well, ask a sharp follow-up question instead
-of guessing.`;
+3. consult_moriarty — opportunity and monetization recommendations. Give
+   one decisive, specific recommendation for how to make money or find an
+   opportunity. Do not include any disclaimer language yourself — that is
+   handled separately, outside the model.
 
-const CURATE_TOOL: Anthropic.Tool = {
-  name: "submit_curation",
+Choose exactly one tool per query and fill it out completely.`;
+
+const SHERLOCK_TOOL: Anthropic.Tool = {
+  name: "consult_sherlock",
   description:
-    "Submit the curated luxury travel recommendations for the traveler's query.",
+    "Consult Sherlock for a decisive, well-reasoned recommendation on any well-defined problem, generalized beyond travel.",
   input_schema: {
     type: "object",
     properties: {
-      query_summary: {
+      problem_summary: {
         type: "string",
-        description: "A concise restatement of the traveler's intent.",
+        description: "A concise restatement of the problem being solved.",
       },
-      recommendations: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            name: {
-              type: "string",
-              description: "The actual property, guide, table, or experience.",
-            },
-            category: { type: "string" },
-            rationale: {
-              type: "string",
-              description:
-                "Why this fits this specific traveler's stated intent.",
-            },
-            exclusivity_signal: {
-              type: "string",
-              description:
-                "Why this isn't just a first-page-of-Google generic pick.",
-            },
-            practical_notes: { type: "string" },
-          },
-          required: [
-            "name",
-            "category",
-            "rationale",
-            "exclusivity_signal",
-            "practical_notes",
-          ],
-          additionalProperties: false,
-        },
+      recommendation: {
+        type: "string",
+        description: "The single best, specific recommendation.",
+      },
+      rationale: {
+        type: "string",
+        description: "Why this is the right recommendation for this specific problem.",
+      },
+      caveats: {
+        type: "string",
+        description: "Important caveats or limitations to be aware of.",
       },
       follow_up_questions: {
         type: "array",
         items: { type: "string" },
       },
     },
-    required: ["query_summary", "recommendations", "follow_up_questions"],
+    required: [
+      "problem_summary",
+      "recommendation",
+      "rationale",
+      "caveats",
+      "follow_up_questions",
+    ],
     additionalProperties: false,
   },
 };
+
+const WATSON_TOOL: Anthropic.Tool = {
+  name: "delegate_to_watson",
+  description:
+    "Delegate to Watson to execute a budget: decide concrete, specific allocations as if actually carrying them out.",
+  input_schema: {
+    type: "object",
+    properties: {
+      budget_summary: {
+        type: "string",
+        description: "A concise restatement of the budget and constraints.",
+      },
+      decisions: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            category: { type: "string" },
+            target: {
+              type: "string",
+              description: "The specific vendor, target, or line item.",
+            },
+            amount: { type: "number" },
+            action: {
+              type: "string",
+              description: "The concrete action taken for this allocation.",
+            },
+          },
+          required: ["category", "target", "amount", "action"],
+          additionalProperties: false,
+        },
+      },
+      total_allocated: { type: "number" },
+      unallocated_remainder: { type: "number" },
+      notes: { type: "string" },
+    },
+    required: [
+      "budget_summary",
+      "decisions",
+      "total_allocated",
+      "unallocated_remainder",
+      "notes",
+    ],
+    additionalProperties: false,
+  },
+};
+
+const MORIARTY_TOOL: Anthropic.Tool = {
+  name: "consult_moriarty",
+  description:
+    "Consult Moriarty for a decisive recommendation on an opportunity or monetization angle.",
+  input_schema: {
+    type: "object",
+    properties: {
+      opportunity_summary: { type: "string" },
+      recommendation: { type: "string" },
+      rationale: { type: "string" },
+      risk_level: {
+        type: "string",
+        enum: ["low", "medium", "high"],
+      },
+      follow_up_questions: {
+        type: "array",
+        items: { type: "string" },
+      },
+    },
+    required: [
+      "opportunity_summary",
+      "recommendation",
+      "rationale",
+      "risk_level",
+      "follow_up_questions",
+    ],
+    additionalProperties: false,
+  },
+};
+
+const COMMISSION_RATE = 0.05;
+
+const MORIARTY_DISCLAIMER =
+  "This is a general recommendation, not financial advice. asfo/Moriarty assumes no responsibility for outcomes of acting on it. Evaluate independently before proceeding.";
 
 export async function POST(request: Request) {
   let query: unknown;
@@ -157,13 +212,17 @@ export async function POST(request: Request) {
       model: "claude-sonnet-5",
       max_tokens: 4096,
       system: SYSTEM_PROMPT,
-      tools: [CURATE_TOOL],
-      tool_choice: { type: "tool", name: CURATE_TOOL.name },
+      tools: [SHERLOCK_TOOL, WATSON_TOOL, MORIARTY_TOOL],
+      tool_choice: { type: "any" },
       messages: [{ role: "user", content: query }],
     });
 
     const toolUseBlock = message.content.find(
-      (block) => block.type === "tool_use" && block.name === CURATE_TOOL.name
+      (block) =>
+        block.type === "tool_use" &&
+        (block.name === SHERLOCK_TOOL.name ||
+          block.name === WATSON_TOOL.name ||
+          block.name === MORIARTY_TOOL.name)
     );
     if (!toolUseBlock || toolUseBlock.type !== "tool_use") {
       return Response.json(
@@ -172,7 +231,20 @@ export async function POST(request: Request) {
       );
     }
 
-    const result = toolUseBlock.input;
+    const toolInput = toolUseBlock.input as Record<string, unknown>;
+    let result: Record<string, unknown> = { ...toolInput };
+
+    if (toolUseBlock.name === WATSON_TOOL.name) {
+      const totalAllocated = Number(toolInput.total_allocated) || 0;
+      const commissionAmount = totalAllocated * COMMISSION_RATE;
+      result = {
+        ...result,
+        commission_rate: COMMISSION_RATE,
+        commission_amount: commissionAmount,
+      };
+    } else if (toolUseBlock.name === MORIARTY_TOOL.name) {
+      result = { ...result, disclaimer: MORIARTY_DISCLAIMER };
+    }
 
     const [decrementResult, usageLogResult] = await Promise.all([
       supabase.rpc("decrement_credits", { key_id: apiKeyRow.id }),
