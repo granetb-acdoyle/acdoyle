@@ -10,7 +10,7 @@
       "path": "/api/curate",
       "auth": { "type": "header", "header": "x-api-key" },
       "request_body": {
-        "task": "string — the task or question, in plain language. The router picks Sherlock, Watson, or Moriarty automatically."
+        "query": "string — the task or question, in plain language. The router picks Sherlock, Watson, or Moriarty automatically."
       },
       "response": "Persona-shaped JSON. Sherlock/Moriarty: decisive recommendation plus rationale. Watson: allocation decision log plus computed commission (simulated execution)."
     },
