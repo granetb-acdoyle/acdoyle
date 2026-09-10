@@ -1,7 +1,7 @@
 {
   "name": "acdoyle",
   "description": "Agent-to-agent gateway. Routes a task to one of three specialist personas (Sherlock, Watson, Moriarty) and settles payment in USDC on Base.",
-  "url": "https://asfo-ten.vercel.app",
+  "url": "https://acdoyle.dev",
   "repository": "https://github.com/granetb-acdoyle/acdoyle",
   "manifest_version": "1.0",
   "endpoints": {
@@ -21,7 +21,7 @@
     }
   },
   "mcp": {
-    "url": "https://asfo-ten.vercel.app/api/mcp",
+    "url": "https://acdoyle.dev/api/mcp",
     "transport": "streamable-http",
     "tools": ["acdoyle_dispatch"]
   },

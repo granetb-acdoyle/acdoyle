@@ -6,7 +6,7 @@
  */
 import Anthropic from "@anthropic-ai/sdk";
 
-const ASFO_API_URL = "https://asfo-ten.vercel.app/api/curate";
+const ACDOYLE_API_URL = "https://acdoyle.dev/api/curate";
 const MODEL = "claude-sonnet-5";
 
 const CURATE_TRAVEL_TOOL: Anthropic.Tool = {
@@ -99,14 +99,14 @@ async function main() {
   const query = toolInput.query;
 
   logStage("Stage 3: Making the live HTTP call to the acdoyle API");
-  console.log(`POST ${ASFO_API_URL}`);
+  console.log(`POST ${ACDOYLE_API_URL}`);
   console.log("Headers:", {
     "Content-Type": "application/json",
     "x-api-key": maskKey(asfoApiKey),
   });
   console.log("Body:", JSON.stringify({ query }, null, 2));
 
-  const httpResponse = await fetch(ASFO_API_URL, {
+  const httpResponse = await fetch(ACDOYLE_API_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

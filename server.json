@@ -3,7 +3,7 @@
   "name": "io.github.granetb-acdoyle/acdoyle",
   "description": "Agent-to-agent gateway routing tasks to Sherlock, Watson, or Moriarty for one decisive answer.",
   "title": "acdoyle",
-  "websiteUrl": "https://asfo-ten.vercel.app",
+  "websiteUrl": "https://acdoyle.dev",
   "repository": {
     "url": "https://github.com/granetb-acdoyle/acdoyle",
     "source": "github"
@@ -12,7 +12,7 @@
   "remotes": [
     {
       "type": "streamable-http",
-      "url": "https://asfo-ten.vercel.app/api/mcp"
+      "url": "https://acdoyle.dev/api/mcp"
     }
   ]
 }

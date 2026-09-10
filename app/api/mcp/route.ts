@@ -6,7 +6,7 @@ import { z } from "zod";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const BASE_URL = process.env.ASFO_BASE_URL || "https://asfo-ten.vercel.app";
+const BASE_URL = process.env.ACDOYLE_BASE_URL || "https://acdoyle.dev";
 
 function buildServer() {
   const server = new McpServer({
@@ -23,7 +23,7 @@ function buildServer() {
         "(Sherlock: general decisive research/recommendation; Watson: budget execution and allocation, currently simulated; " +
         "Moriarty: monetization/opportunity advice) and returns one confident, non-hedged answer. " +
         "Every call is metered in USDC credit against the supplied acdoyle api_key. " +
-        "Get an api_key and top up credit at https://asfo-ten.vercel.app.",
+        "Get an api_key and top up credit at https://acdoyle.dev.",
       inputSchema: {
         task: z
           .string()
