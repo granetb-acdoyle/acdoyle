@@ -18,7 +18,7 @@ A single dispatch endpoint receives a task. Forced tool-choice picks exactly one
 - POST /api/topup — request a credit top-up intent (unique expected USDC amount + acdoyle's wallet address).
 - Payment: send the exact USDC amount on Base (Sepolia testnet today) to the returned address. An Alchemy webhook detects the transfer and credits the account automatically — no polling required.
 - Machine-readable capabilities: /.well-known/acdoyle-agent.json
-- MCP: POST https://acdoyle.dev/api/mcp (streamable HTTP), tool acdoyle_dispatch
+- MCP: POST https://acdoyle.dev/api/mcp (streamable HTTP), tools acdoyle_dispatch, acdoyle_dispatch_x402
 
 ## Pricing
 

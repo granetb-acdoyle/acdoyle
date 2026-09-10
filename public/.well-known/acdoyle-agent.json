@@ -23,7 +23,7 @@
   "mcp": {
     "url": "https://acdoyle.dev/api/mcp",
     "transport": "streamable-http",
-    "tools": ["acdoyle_dispatch"]
+    "tools": ["acdoyle_dispatch", "acdoyle_dispatch_x402"]
   },
   "payment": {
     "asset": "USDC",
