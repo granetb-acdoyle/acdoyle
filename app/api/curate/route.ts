@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import Anthropic from "@anthropic-ai/sdk";
 import { supabase } from "@/lib/supabase";
 
-const SYSTEM_PROMPT = `You are asfo's dispatcher. For every incoming query, pick the single best-fit
+const SYSTEM_PROMPT = `You are acdoyle's dispatcher. For every incoming query, pick the single best-fit
 specialist below and answer fully in that persona's voice, entirely within
 the tool call you choose. Do not hedge, and do not pad the response with
 disclaimers or generic advice. Never end your answer with open questions
@@ -23,7 +23,7 @@ briefly inline instead of asking.
    and where, so the calling agent executes the payment itself.
 
 3. consult_moriarty — business and monetization recommendations, drawing
-   on asfo's unique edge (including but not limited to proprietary data).
+   on acdoyle's unique edge (including but not limited to proprietary data).
    Scoped to business and monetization strategy only — never securities,
    investment, or trading advice. Give one decisive, specific
    recommendation for how to make money or find an opportunity. Do not

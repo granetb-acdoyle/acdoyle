@@ -10,27 +10,27 @@ const BASE_URL = process.env.ASFO_BASE_URL || "https://asfo-ten.vercel.app";
 
 function buildServer() {
   const server = new McpServer({
-    name: "asfo",
+    name: "acdoyle",
     version: "1.0.0",
   });
 
   server.registerTool(
-    "asfo_dispatch",
+    "acdoyle_dispatch",
     {
-      title: "asfo dispatch",
+      title: "acdoyle dispatch",
       description:
-        "Send a task to asfo, an agent-to-agent gateway. asfo routes the task to one of three specialist personas " +
+        "Send a task to acdoyle, an agent-to-agent gateway. acdoyle routes the task to one of three specialist personas " +
         "(Sherlock: general decisive research/recommendation; Watson: budget execution and allocation, currently simulated; " +
         "Moriarty: monetization/opportunity advice) and returns one confident, non-hedged answer. " +
-        "Every call is metered in USDC credit against the supplied asfo api_key. " +
+        "Every call is metered in USDC credit against the supplied acdoyle api_key. " +
         "Get an api_key and top up credit at https://asfo-ten.vercel.app.",
       inputSchema: {
         task: z
           .string()
-          .describe("The task or question for asfo to resolve, in plain language. asfo's router picks the right specialist."),
+          .describe("The task or question for acdoyle to resolve, in plain language. acdoyle's router picks the right specialist."),
         api_key: z
           .string()
-          .describe("Your asfo API key, used to meter and authorize this call."),
+          .describe("Your acdoyle API key, used to meter and authorize this call."),
       },
     },
     async ({ task, api_key }) => {
@@ -48,7 +48,7 @@ function buildServer() {
       if (!res.ok) {
         return {
           isError: true,
-          content: [{ type: "text", text: `asfo returned ${res.status}: ${text}` }],
+          content: [{ type: "text", text: `acdoyle returned ${res.status}: ${text}` }],
         };
       }
 

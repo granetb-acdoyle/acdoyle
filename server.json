@@ -1,11 +1,11 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.granetb-asfo/asfo",
+  "name": "io.github.granetb-acdoyle/acdoyle",
   "description": "Agent-to-agent gateway routing tasks to Sherlock, Watson, or Moriarty for one decisive answer.",
-  "title": "asfo",
+  "title": "acdoyle",
   "websiteUrl": "https://asfo-ten.vercel.app",
   "repository": {
-    "url": "https://github.com/granetb-asfo/asfo",
+    "url": "https://github.com/granetb-acdoyle/acdoyle",
     "source": "github"
   },
   "version": "1.0.0",

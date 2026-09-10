@@ -1,5 +1,5 @@
 /**
- * Generates asfo's dev wallet for Base Sepolia testnet.
+ * Generates acdoyle's dev wallet for Base Sepolia testnet.
  *
  * The private key is never printed or returned — it is written directly to
  * .env.local as WALLET_PRIVATE_KEY. Only the derived public address is
@@ -52,7 +52,7 @@ function main() {
 
   appendWalletKey(privateKey);
 
-  console.log("asfo dev wallet created for Base Sepolia testnet.");
+  console.log("acdoyle dev wallet created for Base Sepolia testnet.");
   console.log(`Address: ${account.address}`);
   console.log("Private key written to .env.local as WALLET_PRIVATE_KEY.");
 }

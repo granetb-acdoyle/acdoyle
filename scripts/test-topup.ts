@@ -49,7 +49,7 @@ async function main() {
     process.exit(1);
   }
 
-  logStage("Stage 1: Requesting a top-up intent from asfo");
+  logStage("Stage 1: Requesting a top-up intent from acdoyle");
   console.log(`POST ${BASE_URL}/api/topup`);
   console.log("Body:", JSON.stringify({ api_key: "<redacted>", usd_amount: USD_AMOUNT }));
 

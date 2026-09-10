@@ -1,7 +1,7 @@
 /**
  * Demonstrates agent-to-agent calling: one Claude agent decides to invoke a
  * "curate_travel" tool, this script executes that tool by calling the live
- * asfo API over HTTP, and the real API response is handed back to Claude as
+ * acdoyle API over HTTP, and the real API response is handed back to Claude as
  * a tool_result so it can synthesize a final answer grounded in that data.
  */
 import Anthropic from "@anthropic-ai/sdk";
@@ -98,7 +98,7 @@ async function main() {
   }
   const query = toolInput.query;
 
-  logStage("Stage 3: Making the live HTTP call to the asfo API");
+  logStage("Stage 3: Making the live HTTP call to the acdoyle API");
   console.log(`POST ${ASFO_API_URL}`);
   console.log("Headers:", {
     "Content-Type": "application/json",
@@ -117,7 +117,7 @@ async function main() {
 
   const apiResult = await httpResponse.json();
 
-  logStage("Stage 4: Raw response from the asfo API");
+  logStage("Stage 4: Raw response from the acdoyle API");
   console.log(`Status: ${httpResponse.status} ${httpResponse.statusText}`);
   console.log(JSON.stringify(apiResult, null, 2));
 

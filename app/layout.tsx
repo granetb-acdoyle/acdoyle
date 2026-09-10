@@ -16,8 +16,8 @@ const plexSans = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "asfo",
-  description: "A luxury travel curation agent.",
+  title: "acdoyle",
+  description: "Agent-to-agent gateway: Sherlock, Watson, Moriarty. USDC-settled.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

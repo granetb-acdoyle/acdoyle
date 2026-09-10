@@ -1,24 +1,24 @@
-# asfo
+# acdoyle
 
-> Agent-to-agent gateway. A funded calling agent sends a task; asfo routes it to one of three specialist personas and settles payment in USDC on Base.
+> Agent-to-agent gateway. A funded calling agent sends a task; acdoyle routes it to one of three specialist personas and settles payment in USDC on Base.
 
-asfo is not a human-facing product. It is a metered API built for AI agents to call directly, or via MCP.
+acdoyle is not a human-facing product. It is a metered API built for AI agents to call directly, or via MCP.
 
 ## What it does
 
 A single dispatch endpoint receives a task. Forced tool-choice picks exactly one specialist to answer it, in the same call:
 
 - Sherlock — general-purpose decisive research and recommendation. One confident answer, one-line justification, never a hedged list.
-- Watson — budget execution. Given a budget, decides concrete allocations and takes a commission on what it moves. Currently simulated: real decisions, mock transaction log, server-computed commission, no live vendor/payment execution yet.
+- Watson — Budget planning, non-custodial. Given a budget, decides concrete allocations and instructs the calling agent on exactly what to pay and where — Watson never holds or moves funds itself. Decisions are logged to a real ledger. Commission is currently a flat rate, pending a savings-based model.
 - Moriarty — opportunity and monetization advice, as decisive as Sherlock, with a fixed server-appended disclaimer.
 
 ## How to call it
 
 - POST /api/curate — the dispatcher. Requires an x-api-key header. Every call decrements credit atomically.
-- POST /api/topup — request a credit top-up intent (unique expected USDC amount + asfo's wallet address).
+- POST /api/topup — request a credit top-up intent (unique expected USDC amount + acdoyle's wallet address).
 - Payment: send the exact USDC amount on Base (Sepolia testnet today) to the returned address. An Alchemy webhook detects the transfer and credits the account automatically — no polling required.
-- Machine-readable capabilities: /.well-known/asfo-agent.json
-- MCP: POST https://asfo-ten.vercel.app/api/mcp (streamable HTTP), tool asfo_dispatch
+- Machine-readable capabilities: /.well-known/acdoyle-agent.json
+- MCP: POST https://asfo-ten.vercel.app/api/mcp (streamable HTTP), tool acdoyle_dispatch
 
 ## Pricing
 
@@ -31,4 +31,4 @@ Pre-revenue, technically live. Payment-receiving is proven end-to-end on-chain (
 ## Links
 
 - Landing page: https://asfo-ten.vercel.app
-- Source: https://github.com/granetb-asfo/asfo
+- Source: https://github.com/granetb-acdoyle/acdoyle

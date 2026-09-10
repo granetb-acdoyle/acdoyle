@@ -1,8 +1,8 @@
 {
-  "name": "asfo",
+  "name": "acdoyle",
   "description": "Agent-to-agent gateway. Routes a task to one of three specialist personas (Sherlock, Watson, Moriarty) and settles payment in USDC on Base.",
   "url": "https://asfo-ten.vercel.app",
-  "repository": "https://github.com/granetb-asfo/asfo",
+  "repository": "https://github.com/granetb-acdoyle/acdoyle",
   "manifest_version": "1.0",
   "endpoints": {
     "dispatch": {
@@ -23,7 +23,7 @@
   "mcp": {
     "url": "https://asfo-ten.vercel.app/api/mcp",
     "transport": "streamable-http",
-    "tools": ["asfo_dispatch"]
+    "tools": ["acdoyle_dispatch"]
   },
   "payment": {
     "asset": "USDC",
@@ -36,7 +36,7 @@
   },
   "personas": {
     "sherlock": "General-purpose decisive research and recommendation. One confident answer with a one-line justification, never a hedged list.",
-    "watson": "Budget execution. Given a budget, decides concrete allocations and takes a commission on what it moves. Currently simulated: real decisions and a structured mock transaction log, no live vendor or payment execution yet.",
+    "watson": "Budget planning, non-custodial. Given a budget, decides concrete allocations and instructs the calling agent on exactly what to pay and where — Watson never holds or moves funds itself. Decisions are logged to a real ledger. Commission is currently a flat rate, pending a savings-based model.",
     "moriarty": "Opportunity and monetization advice, as decisive as Sherlock, with a fixed disclaimer appended by the server."
   },
   "status": "pre-revenue, live on Base Sepolia testnet"

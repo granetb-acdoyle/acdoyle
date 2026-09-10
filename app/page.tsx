@@ -7,7 +7,6 @@ type SherlockResult = {
   recommendation: string;
   rationale: string;
   caveats: string;
-  follow_up_questions: string[];
 };
 
 type WatsonDecision = {
@@ -32,7 +31,6 @@ type MoriartyResult = {
   recommendation: string;
   rationale: string;
   risk_level: "low" | "medium" | "high";
-  follow_up_questions: string[];
   disclaimer: string;
 };
 
@@ -88,14 +86,14 @@ export default function Home() {
   return (
     <div className="flex flex-1 flex-col bg-ink">
       <main className="max-w-prose px-8 py-16 sm:px-16 sm:py-24">
-        <h1 className="font-serif text-xl text-parchment">asfo</h1>
+        <h1 className="font-serif text-xl text-parchment">acdoyle</h1>
 
         <form onSubmit={handleSubmit} className="mt-12 flex flex-col gap-3">
           <input
             type="text"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="A quiet week in the Dolomites for two, mid-October, no crowds"
+            placeholder="Find the best CI provider for a 200-repo org under $500/mo"
             disabled={isLoading}
             className="border border-sage/30 bg-transparent px-4 py-3 text-base text-parchment outline-none placeholder:text-sage focus:border-brass disabled:opacity-60"
           />
@@ -134,16 +132,6 @@ export default function Home() {
                   {result.caveats}
                 </p>
               </>
-            )}
-
-            {result.follow_up_questions.length > 0 && (
-              <div className="mt-12 flex flex-col gap-1.5">
-                {result.follow_up_questions.map((question) => (
-                  <p key={question} className="text-xs leading-relaxed text-sage/70">
-                    {question}
-                  </p>
-                ))}
-              </div>
             )}
           </div>
         )}
@@ -225,16 +213,6 @@ export default function Home() {
                 {result.risk_level}
               </p>
             </div>
-
-            {result.follow_up_questions.length > 0 && (
-              <div className="mt-8 flex flex-col gap-1.5">
-                {result.follow_up_questions.map((question) => (
-                  <p key={question} className="text-xs leading-relaxed text-sage/70">
-                    {question}
-                  </p>
-                ))}
-              </div>
-            )}
 
             <p className="mt-8 text-xs leading-relaxed text-sage/70">
               {result.disclaimer}
