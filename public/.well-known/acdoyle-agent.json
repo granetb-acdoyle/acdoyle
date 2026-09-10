@@ -32,7 +32,7 @@
     "mechanism": "prepaid-credit",
     "flow": "POST /api/topup for an intent, send the exact USDC amount on Base, an Alchemy webhook detects the transfer and grants credit automatically",
     "pricing": "Single non-itemized total_fee_usdc per /api/curate call. Watson additionally takes a commission (currently 5%) on allocated amounts, computed server-side.",
-    "x402": "not yet supported, roadmap item"
+    "x402": "POST /api/curate/x402 accepts the same request body as /api/curate but requires no api_key — instead it is gated by an x402 payment (scheme 'exact', network eip155:84532 / Base Sepolia) priced per call via the server's X402_PRICE_USD configuration. Pay-per-call, no top-up or credit ledger involved. Base Sepolia testnet only for now."
   },
   "personas": {
     "sherlock": "General-purpose decisive research and recommendation. One confident answer with a one-line justification, never a hedged list.",

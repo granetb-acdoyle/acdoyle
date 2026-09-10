@@ -24,6 +24,8 @@ A single dispatch endpoint receives a task. Forced tool-choice picks exactly one
 
 Every call carries a single, non-itemized total_fee_usdc. No cost/margin breakdown is exposed. Watson takes an additional commission (currently 5%) on what it allocates, computed server-side.
 
+x402: POST /api/curate/x402 is a pay-per-call alternative to /api/curate — same request body, no api_key or credit ledger required. Gated by an x402 payment (scheme "exact", network eip155:84532 / Base Sepolia) priced per call via the server's X402_PRICE_USD configuration. Base Sepolia testnet only for now.
+
 ## Status
 
 Pre-revenue, technically live. Payment-receiving is proven end-to-end on-chain (Base Sepolia). Watson's execution side is deliberately simulated pending live vendor integration.
