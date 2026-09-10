@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.granetb-asfo/asfo",
+  "description": "Agent-to-agent gateway routing tasks to Sherlock, Watson, or Moriarty for one decisive answer.",
+  "title": "asfo",
+  "websiteUrl": "https://asfo-ten.vercel.app",
+  "repository": {
+    "url": "https://github.com/granetb-asfo/asfo",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://asfo-ten.vercel.app/api/mcp"
+    }
+  ]
+}
