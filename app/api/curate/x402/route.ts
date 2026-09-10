@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { withX402, x402ResourceServer } from "@x402/next";
 import { HTTPFacilitatorClient } from "@x402/core/server";
 import { ExactEvmScheme } from "@x402/evm/exact/server";
-import { privateKeyToAccount } from "viem/accounts";
 import { supabase } from "@/lib/supabase";
 import {
   DispatchConfigError,
@@ -10,15 +9,10 @@ import {
   runDispatch,
 } from "@/lib/dispatch";
 
-const walletPrivateKey = process.env.WALLET_PRIVATE_KEY;
-if (!walletPrivateKey) {
-  throw new Error("Missing WALLET_PRIVATE_KEY environment variable.");
+const payTo = process.env.WALLET_ADDRESS;
+if (!payTo) {
+  throw new Error("Missing WALLET_ADDRESS environment variable.");
 }
-
-// Same key used for the top-up wallet (scripts/create-wallet.ts) — the x402
-// payment rail settles to the same address, no separate env var needed.
-const account = privateKeyToAccount(walletPrivateKey as `0x${string}`);
-const payTo = account.address;
 
 const priceUsd = process.env.X402_PRICE_USD || "0.05";
 
