@@ -61,7 +61,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { result, watsonDecisionRows } = await runDispatch(query);
+    const { persona, result, watsonDecisionRows } = await runDispatch(query);
 
     const watsonDecisionRowsWithKey = watsonDecisionRows.map((row) => ({
       ...row,
@@ -71,9 +71,12 @@ export async function POST(request: Request) {
     const [decrementResult, usageLogResult, watsonDecisionsResult] =
       await Promise.all([
         supabase.rpc("decrement_credits", { key_id: apiKeyRow.id }),
-        supabase
-          .from("usage_logs")
-          .insert({ api_key_id: apiKeyRow.id, query }),
+        supabase.from("usage_logs").insert({
+          api_key_id: apiKeyRow.id,
+          query,
+          persona,
+          payment_method: "credit",
+        }),
         watsonDecisionRowsWithKey.length > 0
           ? supabase.from("watson_decisions").insert(watsonDecisionRowsWithKey)
           : Promise.resolve({ error: null }),

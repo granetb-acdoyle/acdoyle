@@ -197,7 +197,10 @@ export type WatsonDecisionRow = {
   amount_recommended: number;
 };
 
+export type Persona = "sherlock" | "watson" | "moriarty";
+
 export type DispatchOutcome = {
+  persona: Persona;
   result: Record<string, unknown>;
   watsonDecisionRows: WatsonDecisionRow[];
 };
@@ -237,6 +240,13 @@ export async function runDispatch(query: string): Promise<DispatchOutcome> {
     throw new DispatchOutputError("Model did not return structured output.");
   }
 
+  const persona: Persona =
+    toolUseBlock.name === SHERLOCK_TOOL.name
+      ? "sherlock"
+      : toolUseBlock.name === WATSON_TOOL.name
+        ? "watson"
+        : "moriarty";
+
   const toolInput = toolUseBlock.input as Record<string, unknown>;
   let result: Record<string, unknown> = { ...toolInput };
 
@@ -269,5 +279,5 @@ export async function runDispatch(query: string): Promise<DispatchOutcome> {
     result = { ...result, disclaimer: MORIARTY_DISCLAIMER };
   }
 
-  return { result, watsonDecisionRows };
+  return { persona, result, watsonDecisionRows };
 }
