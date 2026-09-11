@@ -25,7 +25,7 @@ export function SherlockIcon({ className }: IconProps) {
   );
 }
 
-/** Thin single-stroke deerstalker cap with a mustache beneath, abstract only, no face. */
+/** Thin single-stroke bowler hat with a mustache beneath, abstract only, no face. */
 export function WatsonIcon({ className }: IconProps) {
   return (
     <svg
@@ -35,38 +35,31 @@ export function WatsonIcon({ className }: IconProps) {
       aria-hidden="true"
     >
       <path
-        d="M8 23C8 13 15 8 24 8C33 8 40 13 40 23"
+        d="M10 26C10 11 38 11 38 26"
         stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
       />
       <path
-        d="M40 23L46 21L39 27"
+        d="M5 27C8 24.5 9 26 10 26H38C39 26 40 24.5 43 27"
         stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
-        d="M8 23L2 21L9 27"
+        d="M5 27Q24 29.5 43 27"
         stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
-        strokeLinejoin="round"
       />
       <path
-        d="M20 9L24 11.5L28 9"
+        d="M13 38C18 38.5 21 37 22.5 36.5L24 35L25.5 36.5C27 37 30 38.5 35 38"
         stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M13 39C13 35 18 32 21 35.5C22.3 37 23.2 37 24 37C24.8 37 25.7 37 27 35.5C30 32 35 35 35 39"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        strokeLinejoin="miter"
+        strokeMiterlimit="8"
       />
     </svg>
   );
