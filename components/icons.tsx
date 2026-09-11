@@ -25,7 +25,7 @@ export function SherlockIcon({ className }: IconProps) {
   );
 }
 
-/** Thin single-stroke mustache glyph, abstract only, no face. */
+/** Thin single-stroke deerstalker cap with a mustache beneath, abstract only, no face. */
 export function WatsonIcon({ className }: IconProps) {
   return (
     <svg
@@ -35,7 +35,34 @@ export function WatsonIcon({ className }: IconProps) {
       aria-hidden="true"
     >
       <path
-        d="M6 30C6 22 12 18 16 22C18 24.5 21 25 24 25C27 25 30 24.5 32 22C36 18 42 22 42 30"
+        d="M8 23C8 13 15 8 24 8C33 8 40 13 40 23"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M40 23L46 21L39 27"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M8 23L2 21L9 27"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M20 9L24 11.5L28 9"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M13 39C13 35 18 32 21 35.5C22.3 37 23.2 37 24 37C24.8 37 25.7 37 27 35.5C30 32 35 35 35 39"
         stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
@@ -98,6 +125,131 @@ export function MoriartyIcon({ className }: IconProps) {
           </g>
         );
       })}
+    </svg>
+  );
+}
+
+/** Thin single-stroke nested-arc fingerprint, abstract only, for discovery/identification contexts. */
+export function FingerprintIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 48 48"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
+      <path
+        d="M22 25C22 23 23 22 24 22C25 22 26 23 26 25"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M18 27C18 21 20 17 24 17C28 17 30 21 30 27"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M14 30C14 20 18 12 24 12C30 12 34 20 34 30"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M10 32C10 18 16 7 24 7C32 7 38 18 38 32"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+/** Thin single-stroke two-print trail, abstract only, not photographic. */
+export function FootprintIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 48 48"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
+      <ellipse
+        cx="16"
+        cy="33"
+        rx="5.5"
+        ry="8"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        transform="rotate(-8 16 33)"
+      />
+      <circle cx="15" cy="22" r="2.8" stroke="currentColor" strokeWidth="1.5" />
+      <ellipse
+        cx="32"
+        cy="21"
+        rx="5.5"
+        ry="8"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        transform="rotate(8 32 21)"
+      />
+      <circle cx="33" cy="10" r="2.8" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+/** Thin single-stroke ruled ledger sheet, abstract only, for lists/catalogues. */
+export function LedgerIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 48 48"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
+      <rect
+        x="10"
+        y="7"
+        width="28"
+        height="34"
+        rx="2"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
+      <line x1="15" y1="16" x2="33" y2="16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="15" y1="23" x2="33" y2="23" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="15" y1="30" x2="33" y2="30" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+/** Thin single-stroke padlock, abstract only, for security/custody contexts. */
+export function PadlockIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 48 48"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
+      <path
+        d="M17 22V16C17 10.5 20 7 24 7C28 7 31 10.5 31 16V22"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <rect
+        x="11"
+        y="22"
+        width="26"
+        height="19"
+        rx="3"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
+      <circle cx="24" cy="30" r="2.2" stroke="currentColor" strokeWidth="1.5" />
+      <line x1="24" y1="32.2" x2="24" y2="35.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   );
 }

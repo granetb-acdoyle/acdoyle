@@ -1,4 +1,5 @@
 import Nav from "@/components/Nav";
+import { PadlockIcon } from "@/components/icons";
 
 export default function PaymentsPage() {
   return (
@@ -45,9 +46,12 @@ export default function PaymentsPage() {
         </section>
 
         <section className="mt-20 max-w-prose">
-          <h2 className="font-serif text-2xl text-parchment">
-            Non-custodial by construction
-          </h2>
+          <div className="flex items-center gap-3">
+            <PadlockIcon className="h-8 w-8 text-brass" />
+            <h2 className="font-serif text-2xl text-parchment">
+              Non-custodial by construction
+            </h2>
+          </div>
           <p className="mt-4 text-base leading-relaxed text-parchment/90">
             Watson never holds or moves a calling agent&apos;s funds. It
             instructs the calling agent on exactly what to pay and where, so

@@ -18,8 +18,20 @@ body {
   color: var(--color-parchment);
 }
 
+/**
+ * The gradient itself was always correctly wired (present in compiled CSS,
+ * applied via computed styles, no stray `bg-ink` overriding it) — the
+ * visible bug was that a plain background-image on a per-page wrapper div
+ * sizes itself to that div's own box, i.e. the full scrollable content
+ * height, not the viewport. On any page taller than one screen, the fold
+ * only shows a small, diluted slice of the ink -> ink-deep range, so it
+ * read as flat. `background-attachment: fixed` pins the gradient to the
+ * viewport instead, so the full (still subtle, still two-color) transition
+ * is always fully visible on screen regardless of page length or scroll.
+ */
 .bg-ink-gradient {
   background: linear-gradient(160deg, var(--color-ink) 0%, var(--color-ink-deep) 100%);
+  background-attachment: fixed;
 }
 
 @keyframes fade-in {

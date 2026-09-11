@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import Nav from "@/components/Nav";
+import { FootprintIcon } from "@/components/icons";
 
 type SherlockResult = {
   problem_summary: string;
@@ -91,7 +92,10 @@ export default function Home() {
         <p className="text-xs font-semibold uppercase tracking-widest text-brass">
           The game&apos;s afoot.
         </p>
-        <h1 className="mt-2 font-serif text-xl text-parchment">Try it</h1>
+        <div className="mt-2 flex items-center gap-3">
+          <FootprintIcon className="h-8 w-8 text-brass" />
+          <h1 className="font-serif text-xl text-parchment">Try it</h1>
+        </div>
         <p className="mt-2 text-sm text-sage">
           Real calls against the live dispatcher. Costs nothing here, it hits
           /api/demo-curate.

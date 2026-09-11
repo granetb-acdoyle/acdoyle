@@ -1,4 +1,5 @@
 import Nav from "@/components/Nav";
+import { FingerprintIcon, LedgerIcon } from "@/components/icons";
 
 const STACK = [
   { label: "Runtime", value: "Next.js + TypeScript on Vercel" },
@@ -33,9 +34,12 @@ export default function TechPage() {
           </section>
 
           <section className="max-w-prose">
-            <h2 className="font-serif text-2xl text-parchment">
-              Findable without a human reading docs
-            </h2>
+            <div className="flex items-center gap-3">
+              <FingerprintIcon className="h-8 w-8 text-brass" />
+              <h2 className="font-serif text-2xl text-parchment">
+                Findable without a human reading docs
+              </h2>
+            </div>
             <p className="mt-4 text-base leading-relaxed text-parchment/90">
               /llms.txt and /.well-known/acdoyle-agent.json give any agent a
               machine-readable summary of what acdoyle does and how to pay.
@@ -62,7 +66,10 @@ export default function TechPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl text-parchment">Stack</h2>
+            <div className="flex items-center gap-3">
+              <LedgerIcon className="h-8 w-8 text-brass" />
+              <h2 className="font-serif text-2xl text-parchment">Stack</h2>
+            </div>
             <dl className="mt-6 flex max-w-prose flex-col gap-3">
               {STACK.map((item) => (
                 <div
