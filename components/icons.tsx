@@ -25,7 +25,7 @@ export function SherlockIcon({ className }: IconProps) {
   );
 }
 
-/** Thin single-stroke compass rose, abstract only, no figure. */
+/** Thin single-stroke mustache glyph, abstract only, no face. */
 export function WatsonIcon({ className }: IconProps) {
   return (
     <svg
@@ -34,20 +34,29 @@ export function WatsonIcon({ className }: IconProps) {
       className={className}
       aria-hidden="true"
     >
-      <circle cx="24" cy="24" r="16" stroke="currentColor" strokeWidth="1.5" />
       <path
-        d="M24 14L28 24L24 34L20 24Z"
+        d="M6 30C6 22 12 18 16 22C18 24.5 21 25 24 25C27 25 30 24.5 32 22C36 18 42 22 42 30"
         stroke="currentColor"
         strokeWidth="1.5"
+        strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <circle cx="24" cy="24" r="1.4" fill="currentColor" />
     </svg>
   );
 }
 
-/** Thin single-stroke node network, abstract only, no figure. */
+/** Thin single-stroke coin stacks, abstract only, not photographic. */
 export function MoriartyIcon({ className }: IconProps) {
+  const columns = [
+    { x: 11, count: 2 },
+    { x: 24, count: 4 },
+    { x: 37, count: 3 },
+  ];
+  const baseY = 37;
+  const spacing = 4.5;
+  const rx = 6.5;
+  const ry = 2.2;
+
   return (
     <svg
       viewBox="0 0 48 48"
@@ -55,15 +64,40 @@ export function MoriartyIcon({ className }: IconProps) {
       className={className}
       aria-hidden="true"
     >
-      <line x1="14" y1="14" x2="24" y2="26" stroke="currentColor" strokeWidth="1.5" />
-      <line x1="34" y1="16" x2="24" y2="26" stroke="currentColor" strokeWidth="1.5" />
-      <line x1="24" y1="26" x2="18" y2="36" stroke="currentColor" strokeWidth="1.5" />
-      <line x1="24" y1="26" x2="34" y2="34" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="14" cy="14" r="2.5" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="34" cy="16" r="2.5" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="24" cy="26" r="2.5" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="18" cy="36" r="2.5" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="34" cy="34" r="2.5" stroke="currentColor" strokeWidth="1.5" />
+      {columns.map((column) => {
+        const topY = baseY - (column.count - 1) * spacing;
+        return (
+          <g key={column.x}>
+            <line
+              x1={column.x - rx}
+              y1={baseY}
+              x2={column.x - rx}
+              y2={topY}
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
+            <line
+              x1={column.x + rx}
+              y1={baseY}
+              x2={column.x + rx}
+              y2={topY}
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
+            {Array.from({ length: column.count }, (_, i) => (
+              <ellipse
+                key={i}
+                cx={column.x}
+                cy={baseY - i * spacing}
+                rx={rx}
+                ry={ry}
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+            ))}
+          </g>
+        );
+      })}
     </svg>
   );
 }

@@ -11,7 +11,7 @@ const STACK = [
 
 export default function TechPage() {
   return (
-    <div className="flex flex-1 flex-col bg-ink">
+    <div className="flex flex-1 flex-col bg-ink-gradient">
       <Nav />
       <main className="mx-auto w-full max-w-5xl px-8 py-16 sm:px-16 sm:py-24">
         <h1 className="font-serif text-4xl leading-tight text-parchment sm:text-5xl">

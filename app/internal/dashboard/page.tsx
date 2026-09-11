@@ -136,7 +136,7 @@ export default async function InternalDashboardPage() {
     await getDashboardData();
 
   return (
-    <div className="flex flex-1 flex-col bg-ink">
+    <div className="flex flex-1 flex-col bg-ink-gradient">
       <main className="mx-auto w-full max-w-5xl px-8 py-16 sm:px-16 sm:py-24">
         <h1 className="font-serif text-xl text-parchment">
           acdoyle — internal dashboard

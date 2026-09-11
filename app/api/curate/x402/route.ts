@@ -3,6 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { withX402, x402ResourceServer } from "@x402/next";
 import { HTTPFacilitatorClient } from "@x402/core/server";
 import { ExactEvmScheme } from "@x402/evm/exact/server";
+import {
+  bazaarResourceServerExtension,
+  declareDiscoveryExtension,
+} from "@x402/extensions/bazaar";
 import { supabase } from "@/lib/supabase";
 import {
   DispatchConfigError,
@@ -38,8 +42,27 @@ const facilitatorClient = new HTTPFacilitatorClient({
  */
 const USAGE_LOG_ID_HEADER = "x-usage-log-id";
 
+/**
+ * Bazaar discovery: verified against the installed @x402/extensions@2.25.0
+ * source (it ships no discovery-extension docs in its published dist, only
+ * type declarations, so this was checked against the actual .d.ts/.js, not
+ * guessed). Two pieces are both required for a route to be indexed:
+ *   1. `bazaarResourceServerExtension` registered on the resource server —
+ *      this is what enriches the declared extension with the real HTTP
+ *      method at request time (via `enrichDeclaration`).
+ *   2. `extensions: declareDiscoveryExtension({...})` on the route config
+ *      itself, which resolves to `{ bazaar: <discovery info + schema> }`.
+ * The route must also be registered under its literal path (not the bare/
+ * catch-all RouteConfig form) — @x402/next's own withX402 doc comment says
+ * as much: "Prefer the keyed form when using bazaar discovery extensions so
+ * the resource is indexed with the correct path."
+ */
+const BAZAAR_QUERY_EXAMPLE =
+  "Find the best CI provider for a 200-repo org under $500/mo";
+
 const resourceServer = new x402ResourceServer(facilitatorClient)
   .register("eip155:84532", new ExactEvmScheme())
+  .registerExtension(bazaarResourceServerExtension)
   .onAfterSettle(async (context) => {
     if (!context.result.success || !context.result.transaction) return;
 
@@ -131,13 +154,36 @@ async function handler(request: NextRequest): Promise<NextResponse> {
 export const POST = withX402(
   handler,
   {
-    accepts: {
-      scheme: "exact",
-      price: `$${priceUsd}`,
-      network: "eip155:84532",
-      payTo,
+    "/api/curate/x402": {
+      accepts: {
+        scheme: "exact",
+        price: `$${priceUsd}`,
+        network: "eip155:84532",
+        payTo,
+      },
+      description: "acdoyle dispatch (Sherlock/Watson/Moriarty), paid per call via x402 on Base Sepolia testnet",
+      extensions: declareDiscoveryExtension({
+        bodyType: "json",
+        input: { query: BAZAAR_QUERY_EXAMPLE },
+        inputSchema: {
+          properties: {
+            query: { type: "string" },
+          },
+          required: ["query"],
+        },
+        output: {
+          example: {
+            problem_summary:
+              "The org needs a CI provider that scales to 200 repos under a $500/mo budget.",
+            recommendation: "GitHub Actions with self-hosted runners.",
+            rationale:
+              "Usage-based pricing on self-hosted compute keeps cost predictable at this repo count, and it's already where the org's code lives.",
+            caveats:
+              "Requires managing runner infrastructure separately from GitHub's hosted compute.",
+          },
+        },
+      }),
     },
-    description: "acdoyle dispatch (Sherlock/Watson/Moriarty), paid per call via x402 on Base Sepolia testnet",
   },
   resourceServer
 );

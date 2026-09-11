@@ -18,6 +18,10 @@ body {
   color: var(--color-parchment);
 }
 
+.bg-ink-gradient {
+  background: linear-gradient(160deg, var(--color-ink) 0%, var(--color-ink-deep) 100%);
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;

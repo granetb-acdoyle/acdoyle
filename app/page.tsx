@@ -6,18 +6,21 @@ import { SherlockIcon, WatsonIcon, MoriartyIcon } from "@/components/icons";
 const PERSONAS = [
   {
     name: "Sherlock",
+    href: "/sherlock",
     Icon: SherlockIcon,
     description:
       "Elementary problem solving. One confident recommendation with its reasoning, never a hedged list, never it depends.",
   },
   {
     name: "Watson",
+    href: "/watson",
     Icon: WatsonIcon,
     description:
       "The budget's loyal executor. Tells the calling agent exactly what to pay and where. acdoyle never holds the funds itself.",
   },
   {
     name: "Moriarty",
+    href: "/moriarty",
     Icon: MoriartyIcon,
     description:
       "Business and monetization advice from the mind behind the scheme. Never securities or investment advice.",
@@ -48,7 +51,7 @@ const TEASERS = [
 
 export default function Home() {
   return (
-    <div className="flex flex-1 flex-col bg-ink">
+    <div className="flex flex-1 flex-col bg-ink-gradient">
       <Nav />
       <main className="mx-auto w-full max-w-5xl px-8 py-16 sm:px-16 sm:py-24">
         {/* Hero */}
@@ -89,7 +92,11 @@ export default function Home() {
         <section className="mt-20">
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {PERSONAS.map((persona) => (
-              <div key={persona.name} className="border border-sage/20 px-6 py-6">
+              <Link
+                key={persona.name}
+                href={persona.href}
+                className="border border-sage/20 px-6 py-6 transition-colors hover:border-brass"
+              >
                 <persona.Icon className="h-12 w-12 text-sage" />
                 <h2 className="mt-4 font-serif text-xl text-parchment">
                   {persona.name}
@@ -97,7 +104,7 @@ export default function Home() {
                 <p className="mt-3 text-sm leading-relaxed text-sage">
                   {persona.description}
                 </p>
-              </div>
+              </Link>
             ))}
           </div>
         </section>

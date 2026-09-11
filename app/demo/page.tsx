@@ -85,7 +85,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-1 flex-col bg-ink">
+    <div className="flex flex-1 flex-col bg-ink-gradient">
       <Nav />
       <main className="max-w-prose px-8 py-16 sm:px-16 sm:py-24">
         <p className="text-xs font-semibold uppercase tracking-widest text-brass">

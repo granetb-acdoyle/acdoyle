@@ -16,11 +16,6 @@ const GROUPS: { heading: string; rows: Row[] }[] = [
         label: "Tool: acdoyle_dispatch_x402",
         value: "No key needed, pay-per-call over x402.",
       },
-      {
-        label: "Registry",
-        value:
-          "Registered on the official MCP Registry as io.github.granetb-acdoyle/acdoyle.",
-      },
     ],
   },
   {
@@ -44,6 +39,16 @@ const GROUPS: { heading: string; rows: Row[] }[] = [
     ],
   },
   {
+    heading: "Directories",
+    rows: [
+      {
+        label: "MCP Registry",
+        value: "Listed as io.github.granetb-acdoyle/acdoyle.",
+        href: "https://registry.modelcontextprotocol.io",
+      },
+    ],
+  },
+  {
     heading: "Source",
     rows: [
       {
@@ -57,7 +62,7 @@ const GROUPS: { heading: string; rows: Row[] }[] = [
 
 export default function EndpointsPage() {
   return (
-    <div className="flex flex-1 flex-col bg-ink">
+    <div className="flex flex-1 flex-col bg-ink-gradient">
       <Nav />
       <main className="mx-auto w-full max-w-5xl px-8 py-16 sm:px-16 sm:py-24">
         <h1 className="font-serif text-4xl leading-tight text-parchment sm:text-5xl">
