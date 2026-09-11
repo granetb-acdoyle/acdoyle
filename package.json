@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:x402": "tsx scripts/test-x402.ts"
+    "test:x402": "tsx scripts/test-x402.ts",
+    "test:load": "tsx scripts/load-test.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.123.0",
