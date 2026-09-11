@@ -4,7 +4,7 @@ const STACK = [
   { label: "Runtime", value: "Next.js + TypeScript on Vercel" },
   { label: "Database", value: "Supabase (Postgres)" },
   { label: "Model", value: "Claude (Anthropic API)" },
-  { label: "Chain", value: "Base — Sepolia testnet today" },
+  { label: "Chain", value: "Base, Sepolia testnet today" },
   { label: "On-chain detection", value: "Alchemy" },
   { label: "x402 settlement", value: "Coinbase Developer Platform" },
 ];
@@ -26,7 +26,7 @@ export default function TechPage() {
             <p className="mt-4 text-base leading-relaxed text-parchment/90">
               One dispatch endpoint (/api/curate). Forced tool-choice across
               three tool definitions means Claude picks exactly one
-              specialist and answers fully within that same call — no
+              specialist and answers fully within that same call: no
               separate classification round-trip, no extra cost burned on
               routing.
             </p>
@@ -41,7 +41,9 @@ export default function TechPage() {
               machine-readable summary of what acdoyle does and how to pay.
               It&apos;s also registered on the official MCP Registry as
               io.github.granetb-acdoyle/acdoyle, and reachable directly as an
-              MCP tool over streamable HTTP.
+              MCP tool over streamable HTTP. Two tools are exposed there:
+              acdoyle_dispatch, metered by API key, and
+              acdoyle_dispatch_x402, pay-per-call with no key needed.
             </p>
           </section>
 

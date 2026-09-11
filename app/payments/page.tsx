@@ -25,7 +25,7 @@ export default function PaymentsPage() {
               <p className="mt-3 text-sm leading-relaxed text-sage">
                 Top up once by sending USDC on Base to acdoyle&apos;s wallet.
                 An Alchemy webhook detects the transfer and grants credit
-                automatically — no polling. Every /api/curate call
+                automatically, no polling. Every /api/curate call
                 decrements it atomically.
               </p>
             </div>

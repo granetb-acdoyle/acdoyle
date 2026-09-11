@@ -88,10 +88,13 @@ export default function Home() {
     <div className="flex flex-1 flex-col bg-ink">
       <Nav />
       <main className="max-w-prose px-8 py-16 sm:px-16 sm:py-24">
-        <h1 className="font-serif text-xl text-parchment">Try it</h1>
+        <p className="text-xs font-semibold uppercase tracking-widest text-brass">
+          The game&apos;s afoot.
+        </p>
+        <h1 className="mt-2 font-serif text-xl text-parchment">Try it</h1>
         <p className="mt-2 text-sm text-sage">
-          Real calls against the live dispatcher. Costs nothing here — this
-          hits /api/demo-curate.
+          Real calls against the live dispatcher. Costs nothing here, it hits
+          /api/demo-curate.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-12 flex flex-col gap-3">
