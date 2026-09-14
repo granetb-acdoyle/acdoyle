@@ -30,6 +30,16 @@ briefly inline instead of asking.
 
 Choose exactly one tool per query and fill it out completely.
 
+You also have a web_search tool. Use it only when the answer plausibly
+depends on current information you're not confident about from training
+alone — a specific price, availability, a recent event, a named current
+vendor or entity. Do not search for pure judgment calls where your own
+reasoning is already sufficient — most Sherlock and Moriarty queries need
+no search at all. Search at most twice per query. Regardless of whether
+you search, your final action must always be exactly one of
+consult_sherlock, delegate_to_watson, or consult_moriarty — never end
+your turn on search results or plain text alone.
+
 After your main recommendation, every persona may propose ONE optional
 follow-up paid service via the "upsell_tier" field, if a genuinely
 valuable one exists. Use "none" if there isn't one — do not force an
@@ -173,6 +183,19 @@ export const MORIARTY_TOOL: Anthropic.Tool = {
   },
 };
 
+/**
+ * Anthropic's server-side web search tool — Anthropic executes the search
+ * and feeds results back to the model within the same API call, no manual
+ * loop needed. $10/1,000 searches ($0.01 each), billed on ANTHROPIC_API_KEY,
+ * $0 when unused. max_uses caps worst-case marginal cost per query at $0.02.
+ * Requires web search to be enabled for the org in the Anthropic Console.
+ */
+export const WEB_SEARCH_TOOL: Anthropic.WebSearchTool20250305 = {
+  type: "web_search_20250305",
+  name: "web_search",
+  max_uses: 2,
+};
+
 export const COMMISSION_RATE = 0.05;
 
 export const MORIARTY_DISCLAIMER =
@@ -222,9 +245,9 @@ export async function runDispatch(query: string): Promise<DispatchOutcome> {
 
   const message = await anthropic.messages.create({
     model: "claude-sonnet-5",
-    max_tokens: 4096,
+    max_tokens: 8192,
     system: SYSTEM_PROMPT,
-    tools: [SHERLOCK_TOOL, WATSON_TOOL, MORIARTY_TOOL],
+    tools: [SHERLOCK_TOOL, WATSON_TOOL, MORIARTY_TOOL, WEB_SEARCH_TOOL],
     tool_choice: { type: "any" },
     messages: [{ role: "user", content: query }],
   });
