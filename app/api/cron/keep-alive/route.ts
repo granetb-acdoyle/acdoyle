@@ -20,7 +20,7 @@ export async function GET(request: Request) {
     return Response.json({ error: "Unauthorized." }, { status: 401 });
   }
 
-  const { error } = await supabase.from("usage_logs").select("id").limit(1);
+  const { error } = await supabase.from("keep_alive").upsert({ id: 1, pinged_at: new Date().toISOString() });
 
   if (error) {
     return Response.json(
